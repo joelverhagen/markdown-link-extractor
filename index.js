@@ -26,3 +26,16 @@ module.exports = function markdownLinkExtractor(markdown) {
 
     return links;
 };
+
+module.exports.extractAnchors = function(markdown) {
+    var anchors = [];
+
+    var renderer = new marked.Renderer();
+
+    renderer.heading = function (text, level, raw, slugger) {
+        anchors.push('#' + this.options.headerPrefix + slugger.slug(raw));
+    }
+    marked(markdown, { renderer: renderer });
+
+    return anchors;
+};
